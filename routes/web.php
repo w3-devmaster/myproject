@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\AdminController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,6 +23,12 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Auth::routes();
+Route::prefix('admin')->name('admin.')->group(function(){
+    Route::get('/',[AdminController::class,'index'])->name('index');
+    Route::get('signup',[AdminController::class,'register_form'])->name('register-form');
+    Route::post('register',[AdminController::class,'register'])->name('register');
+    Route::get('login',[AdminController::class,'login_form'])->name('login-form');
+    Route::post('auth',[AdminController::class,'auth'])->name('auth');
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+    Route::post('logout',[AdminController::class,'logout'])->name('logout');
+});
